@@ -8,15 +8,18 @@ import DDayCalculatorModal from './components/modals/DDayCalculatorModal';
 export default function Home() {
   const [isAgeModalOpen, setIsAgeModalOpen] = useState(false);
   const [isDDayModalOpen, setIsDDayModalOpen] = useState(false);
+  const [adsLoaded, setAdsLoaded] = useState(false);
 
   useEffect(() => {
-    // AdSense 광고 로드
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.error('AdSense error:', err);
+    // AdSense 스크립트가 로드된 후 광고 초기화
+    if (adsLoaded) {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (err) {
+        console.error('AdSense error:', err);
+      }
     }
-  }, []);
+  }, [adsLoaded]);
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
@@ -26,6 +29,7 @@ export default function Home() {
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2764784359698938"
         crossOrigin="anonymous"
         strategy="afterInteractive"
+        onLoad={() => setAdsLoaded(true)}
       />
       {/* Header Section */}
       <header className="py-10 px-4 text-center max-w-4xl mx-auto">
@@ -57,10 +61,10 @@ export default function Home() {
       {/* Body Section */}
       <div className="max-w-6xl mx-auto px-4 pb-24 space-y-32">
         {/* Google AdSense 광고 */}
-        <div className="flex justify-center">
+        <div className="flex justify-center w-full min-h-[250px]">
           <ins
             className="adsbygoogle"
-            style={{ display: 'block' }}
+            style={{ display: 'block', minHeight: '250px' }}
             data-ad-client="ca-pub-2764784359698938"
             data-ad-slot="1428164136"
             data-ad-format="auto"
